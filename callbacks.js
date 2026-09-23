@@ -294,41 +294,89 @@ function commutative(func1, func2, value) {
   return func2(func1(value)) === func1(func2(value));
 }
 
-const multBy3 = (n) => n * 3;
-const divBy4 = (n) => n / 4;
-const subtract5 = (n) => n - 5;
-console.log(commutative(multBy3, divBy4, 11)); // should log: true
-console.log(commutative(multBy3, subtract5, 10)); // should log: false
-console.log(commutative(divBy4, subtract5, 48)); // should log: false
+// const multBy3 = (n) => n * 3;
+// const divBy4 = (n) => n / 4;
+// const subtract5 = (n) => n - 5;
+// console.log(commutative(multBy3, divBy4, 11)); // should log: true
+// console.log(commutative(multBy3, subtract5, 10)); // should log: false
+// console.log(commutative(divBy4, subtract5, 48)); // should log: false
 
 // Extension 13
 
-function objFilter(obj, callback) {}
+function objFilter(obj, callback) {
+  const output = {};
+
+  for (let key in obj) {
+    if (callback(key) === obj[key]) {
+      output[key] = obj[key];
+    }
+  }
+  return output;
+}
 
 // const startingObj = {};
 // startingObj[6] = 3;
 // startingObj[2] = 1;
 // startingObj[12] = 4;
-// const half = n => n / 2;
+// const half = (n) => n / 2;
 // console.log(objFilter(startingObj, half)); // should log: { 2: 1, 6: 3 }
 
 // Extension 14
 
-function rating(arrOfFuncs, value) {}
+function rating(arrOfFuncs, value) {
+  let count = 0;
 
-// const capitalize = str => str.toUpperCase();
-// const addLowerCase = str => str + str.toLowerCase();
-// const repeat = str => str + str;
-// const capAddlowRepeat = [capitalize, addLowerCase, repeat];
-// console.log(pipe(capAddlowRepeat, 'cat')); // should log: 'CATcatCATcat'
+  for (let i = 0; i < arrOfFuncs.length; i++) {
+    if (arrOfFuncs[i](value)) {
+      count++;
+    }
+  }
+  return (count / arrOfFuncs.length) * 100;
+}
+
+// const isEven = (n) => n % 2 === 0;
+// const greaterThanFour = (n) => n > 4;
+// const isSquare = (n) => Math.sqrt(n) % 1 === 0;
+// const hasSix = (n) => n.toString().includes("6");
+// const checks = [isEven, greaterThanFour, isSquare, hasSix];
+// console.log(rating(checks, 64)); // should log: 100
+// console.log(rating(checks, 66)); // should log: 75
 
 // Extension 15
-function highestFunc(objOfFuncs, subject) {}
+function highestFunc(objOfFuncs, subject) {
+  let highestKey;
+  let highestValue = -Infinity;
+
+  for (let key in objOfFuncs) {
+    const result = objOfFuncs[key](subject);
+    if (result > highestValue) {
+      highestValue = result;
+      highestKey = key;
+    }
+  }
+  return highestKey;
+}
 
 // const groupOfFuncs = {};
-// groupOfFuncs.double = n => n * 2;
-// groupOfFuncs.addTen = n => n + 10;
-// groupOfFuncs.inverse = n => n * -1;
+// groupOfFuncs.double = (n) => n * 2;
+// groupOfFuncs.addTen = (n) => n + 10;
+// groupOfFuncs.inverse = (n) => n * -1;
 // console.log(highestFunc(groupOfFuncs, 5)); // should log: 'addTen'
 // console.log(highestFunc(groupOfFuncs, 11)); // should log: 'double'
 // console.log(highestFunc(groupOfFuncs, -20)); // should log: 'inverse'
+
+// Extension 16
+function pipe(arrOfFuncs, value) {
+  let output = value;
+
+  for (let func of arrOfFuncs) {
+    output = func(output);
+  }
+  return output;
+}
+
+// const capitalize = (str) => str.toUpperCase();
+// const addLowerCase = (str) => str + str.toLowerCase();
+// const repeat = (str) => str + str;
+// const capAddlowRepeat = [capitalize, addLowerCase, repeat];
+// console.log(pipe(capAddlowRepeat, "cat")); // should log: 'CATcatCATcat'
